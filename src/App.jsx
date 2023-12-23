@@ -6,13 +6,19 @@ import Index from "./routes"
 
 
 function App() {
-  const { url } = useSelector(state => state.home)
-  console.log(url);
+  //const { url } = useSelector(state => state.home)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    fetchApi("/movie/popular")
-      .then(res => dispatch(getApiConfiguration(res)))
+    fetchApi("/configuration")
+      .then(res => {
+        const url = {
+          backdrop: res.images.base_url + "original",
+          poster: res.images.base_url + "original",
+          profile: res.images.base_url + "original",
+        }
+        dispatch(getApiConfiguration(url))
+      })
   }, [])
 
   return (

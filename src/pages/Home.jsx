@@ -1,9 +1,10 @@
+import HeroBanner from "../components/heroBanner/HeroBanner"
 
 
 function Home() {
   return (
     <div>
-      <h1 className="text-red-900">home</h1>
+      <HeroBanner></HeroBanner>
     </div>
   )
 }

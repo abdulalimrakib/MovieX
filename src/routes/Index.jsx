@@ -12,7 +12,7 @@ function Index() {
     return (
         <div>
             <BrowserRouter>
-                <Header />
+                {/* <Header /> */}
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/:mediaType/:id" element={<Details />} />
@@ -20,7 +20,7 @@ function Index() {
                     <Route path="/search/:mediaType" element={<SearchResult />} />
                     <Route path="*" element={<Error />} />
                 </Routes>
-                <Footer />
+                {/* <Footer /> */}
             </BrowserRouter>
         </div>
     )
