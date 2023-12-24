@@ -16,7 +16,7 @@ function HeroBanner() {
     useEffect(() => {
         const bg = url.backdrop + data?.results?.[Math.floor(Math.random() * 20)]?.backdrop_path
         setBackGround(bg)
-    })
+    }, [data, url])
 
     const keyHandle = (e) => {
         if (e.key === "Enter" && searchData.length > 0) {
@@ -37,15 +37,15 @@ function HeroBanner() {
 
 
                 <div className="relative text-center flex flex-col">
-                    <span className="text-white md:text-[90px] sm:text-[50px] font-bold mb-[10px]">Wellcome.</span>
-                    <span className="text-white md:text-[24px] sm:text-[18px] font-medium mb-[40px]">Millions of movies, Tv shows and people to deserve. Explore now</span>
+                    <span className="text-white md:text-[90px] text-[50px] font-bold mb-[10px]">Wellcome.</span>
+                    <span className="text-white md:text-[24px] text-[18px] font-medium mb-[40px]">Millions of movies, Tv shows and people to deserve. Explore now</span>
 
                     <div className="flex items-center w-full ">
-                        <input type="text" className="w-[85%] rounded-s-full h-[50px] " name="search" placeholder="search fro a move or tv show..."
+                        <input type="text" className="w-[80%] rounded-s-full h-[50px] indent-4 text-[18px]" name="search" placeholder="search fro a move or tv show..."
                             onChange={e => { setSearchData(e.target.value) }}
                             onKeyUp={keyHandle}
                         />
-                        <button className="w-[15%] bg-gradient-to-r from-[#FD8E28] to-[#CD1563] h-[50px] rounded-e-full">search</button>
+                        <button className="w-[20%] text-[18px] font-medium bg-gradient-to-r from-[#FD8E28] to-[#CD1563] h-[50px] rounded-e-full">search</button>
                     </div>
                 </div>
             </div>
