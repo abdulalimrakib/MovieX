@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import useFetch from './../../hooks/useFetch';
 import { useSelector } from "react-redux";
 import "./heroBanner.scss"
-import Img from "./Img";
+import Img from "../Img";
 
 
 function HeroBanner() {
