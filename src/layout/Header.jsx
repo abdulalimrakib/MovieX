@@ -34,7 +34,7 @@ function Header() {
 
       {
         isSearchBoxOpen &&
-        <div className='absolute w-full top=[60px] mt-[60px] z-10 rounded-full flex justify-center'>
+        <div className='fixed w-full top=[60px] mt-[60px] z-10 rounded-full flex justify-center'>
           <input type="text" className='w-[80%] h-[40px]  text-[14px] indent-5 rounded-s-full' />
           <RiCloseFill className="text-[40px] bg-white rounded-e-full" onClick={() => setIsSearchBoxOpen(false)}/>
         </div>

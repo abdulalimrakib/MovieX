@@ -23,7 +23,9 @@
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.6.2",
     "react-select": "^5.7.0",
-    "sass": "^1.57.1"
+    "react-slick": "^0.29.0",
+    "sass": "^1.57.1",
+    "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
