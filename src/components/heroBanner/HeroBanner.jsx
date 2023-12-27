@@ -27,7 +27,7 @@ function HeroBanner() {
     return (
         <>
             <div className="relative w-full md:h-[700px] sm:h-[450px] flex justify-center items-center">
-                <div className="absolute w-full h-full opacity-50 overflow-hidden">
+                <div className="absolute w-full h-full opacity-70 overflow-hidden">
                     {!isLoading && <Img className="" src={backGround} alt="" />}
                 </div>
 

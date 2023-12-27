@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useState } from "react"
 import Switch from "../switchingTab/Switch"
 import useFetch from "../../hooks/useFetch"
@@ -8,10 +9,9 @@ import "slick-carousel/slick/slick-theme.css";
 import Skeleton from '@mui/material/Skeleton';
 
 
-
-const Trending = () => {
-    const [trendingData, setTrendingData] = useState("day")
-    const { isLoading, data } = useFetch(`/trending/all/${trendingData}`)
+const Populer = () => {
+    const [populerData, setPopulerData] = useState("movie")
+    const { isLoading, data } = useFetch(`/${populerData}/popular`)
     var settings = {
         dots: false,
         infinite: true,
@@ -20,25 +20,27 @@ const Trending = () => {
         slidesToScroll: 3
     };
 
-
-    const timeOfTrendingData = (time) => {
-        setTrendingData(time.toLowerCase())
+    const typeOfPopulerData = (type) => {
+        if (type) {
+            type === "Movies" ? setPopulerData("movie") : setPopulerData("tv")
+        }
     }
+    console.log(populerData);
 
     return (
         <>
             <div className="flex justify-between px-10">
                 <div>
-                    <span className="text-3xl text-[#D2225C] font-medium">Trending</span>
+                    <span className="text-3xl text-[#D2225C] font-medium">What's Populer</span>
                 </div>
                 <div>
-                    <Switch tabs={["Day", "Week"]} getTabMethod={timeOfTrendingData} />
+                    <Switch tabs={["Movies", "Tv Shows"]} getTabMethod={typeOfPopulerData} />
                 </div>
             </div>
-            <div className="px-5 my-16">
+            <div className="px-5 my-10">
                 <Slider {...settings}>
                     {
-                        !isLoading ? (data?.results?.map(data => <Poster key={data.id} mediaType={trendingData} posterData={data} />)) : <p>
+                        !isLoading ? (data?.results?.map(data => <Poster key={data.id} posterData={data} />)) : <p>
                             <Skeleton className="" variant="rounded" animation="wave" width={210} height={60} />
                         </p>
                     }
@@ -49,4 +51,4 @@ const Trending = () => {
     )
 }
 
-export default Trending
+export default Populer
