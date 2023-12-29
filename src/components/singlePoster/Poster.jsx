@@ -7,13 +7,13 @@ import dayjs from "dayjs";
 import Reating from "../reating/Reating.jSX";
 import { useNavigate } from "react-router-dom";
 
-const Poster = ({ posterData, mediaType, key }) => {
+const Poster = ({ posterData, media_type }) => {
     // console.log(posterData);
     const navigate = useNavigate()
     const { url } = useSelector(state => state.home)
 
     const goDetails = (key) => {
-        navigate(`/${mediaType}/${key}`)
+        navigate(`/${media_type || posterData.media_type}/${key}`)
     }
 
     const imgUrl = posterData.backdrop_path ? url.poster + posterData.backdrop_path : fallBackImg
@@ -21,7 +21,9 @@ const Poster = ({ posterData, mediaType, key }) => {
         <div className="flex-shrink-0 w-full hover:cursor-pointer" onClick={() => goDetails(posterData.id)}>
             <div className="w-full aspect-[1/1.5] bg-cover bg-center">
                 <Img src={imgUrl}></Img>
-                <Reating value={posterData.vote_average.toFixed(1)} />
+                <div className="absolute w-[40px] bg-white -mt-[45px] ml-1 rounded-full">
+                    <Reating value={posterData.vote_average.toFixed(1)} />
+                </div>
             </div>
             <div>
                 <span className="text-white px-1 flex justify-start items-center py-2 mt-3 truncate">{posterData.title || posterData.name}</span>

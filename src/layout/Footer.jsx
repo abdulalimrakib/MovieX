@@ -7,7 +7,7 @@ import {
 
 function Footer() {
   return (
-    <footer className="text-white bg-black py-5">
+    <footer className="text-white bg-black py-5 relative">
       <ul className="flex justify-center my-5 gap-5 text-[20px]">
         <li className="hover:cursor-pointer hover:text-[#DF4156] duration-200">Terms Of Use</li>
         <li className="hover:cursor-pointer hover:text-[#DF4156] duration-200">Privacy-Policy</li>

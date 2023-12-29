@@ -40,7 +40,7 @@ const Populer = () => {
             <div className="px-5 my-10">
                 <Slider {...settings}>
                     {
-                        !isLoading ? (data?.results?.map(data => <Poster key={data.id} posterData={data} />)) : <p>
+                        !isLoading ? (data?.results?.map(data => <Poster key={data.id} media_type={populerData} posterData={data} />)) : <p>
                             <Skeleton className="" variant="rounded" animation="wave" width={210} height={60} />
                         </p>
                     }

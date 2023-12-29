@@ -1,8 +1,11 @@
+import ShowDetails from "../components/detailsSection/ShowDetails"
 
 
 function Details() {
   return (
-    <div>Details</div>
+    <div>
+      <ShowDetails />
+    </div>
   )
 }
 
