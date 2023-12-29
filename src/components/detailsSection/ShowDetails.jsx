@@ -5,6 +5,7 @@ import Img from './../Img';
 import './showDetails.scss'
 import Reating from './../reating/Reating';
 import dayjs from "dayjs";
+import CastList from "../castList/CastList";
 
 const ShowDetails = () => {
     const { mediaType, id } = useParams()
@@ -15,8 +16,6 @@ const ShowDetails = () => {
     const director = creditsData?.crew?.filter(data => data?.job === "Director")
     const writer = creditsData?.crew?.filter(data => data?.job === "Story")
 
-    console.log(creditsData);
-
     const imgUrl = url?.backdrop + data?.backdrop_path
 
 
@@ -26,7 +25,7 @@ const ShowDetails = () => {
             {!isLoading ? (
                 <>
                     <div className="">
-                        <div className="absolute opacity-10 bg-cover bg-center w-full h-full">
+                        <div className="absolute opacity-20 bg-cover bg-center w-full h-full">
                             <Img src={imgUrl} />
                         </div>
                         <div className="opacity-layer">
@@ -86,6 +85,9 @@ const ShowDetails = () => {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div>
+                        <CastList casts={creditsData.cast} isLoading={creditsLoadong} />
                     </div>
                 </>
             ) : ""
