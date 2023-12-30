@@ -27,15 +27,15 @@ const Trending = () => {
 
     return (
         <>
-            <div className="flex justify-between px-10">
+            <div className="flex justify-between px-1 md:px-10">
                 <div>
-                    <span className="text-3xl text-[#D2225C] font-medium">Trending</span>
+                    <span className="text-xl md:text-3xl text-[#D2225C] font-bold md:font-medium">Trending</span>
                 </div>
                 <div>
                     <Switch tabs={["Day", "Week"]} getTabMethod={timeOfTrendingData} />
                 </div>
             </div>
-            <div className="px-5 my-16">
+            <div className="px-2 md:px-5 my-3 md:my-10 mb-[40px] md:mb-[70px]">
                 <Slider {...settings}>
                     {
                         !isLoading ? (data?.results?.map(data => <Poster key={data.id} posterData={data} />)) : <p>

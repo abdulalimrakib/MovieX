@@ -8,7 +8,7 @@ function Home() {
   return (
     <div>
       <HeroBanner></HeroBanner>
-      <div className="my-10 flex flex-col gap-5">
+      <div className="my-5 md:my-10 flex flex-col gap-5">
         <Trending />
         <Populer />
         <TopRated />

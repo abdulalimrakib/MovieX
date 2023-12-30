@@ -2,7 +2,9 @@
 
 function Explore() {
     return (
-        <div>Explore</div>
+        <div className="py-[100px] flex justify-center items-center">
+            <h1 className="text-[30px] text-white "> Comming soon .....</h1>
+        </div>
     )
 }
 

@@ -21,13 +21,13 @@ const Poster = ({ posterData, media_type }) => {
         <div className="flex-shrink-0 w-full hover:cursor-pointer" onClick={() => goDetails(posterData.id)}>
             <div className="w-full aspect-[1/1.5] bg-cover bg-center">
                 <Img src={imgUrl}></Img>
-                <div className="absolute w-[40px] bg-white -mt-[45px] ml-1 rounded-full">
+                <div className="absolute w-[20px] md:w-[40px] bg-white -mt-[20px] md:-mt-[45px] md:ml-1 rounded-full">
                     <Reating value={posterData?.vote_average?.toFixed(1)} />
                 </div>
             </div>
             <div>
-                <span className="text-white px-1 flex justify-start items-center py-2 mt-3 truncate">{posterData.title || posterData.name}</span>
-                <span className="px-1 flex justify-start items-center py-2 text-gray-500">{dayjs(posterData.release_date).format('MMM D, YYYY')}</span>
+                <span className="text-white px-1 flex justify-start items-center py-1 md:py-2 mt-2 md:mt-3 truncate text-[14px] md:text-[16px]">{posterData.title || posterData.name}</span>
+                <span className="px-1 flex justify-start items-center py-1 md:py-2 text-gray-500 text-[10px] md:text-[16px]">{dayjs(posterData.release_date).format('MMM D, YYYY')}</span>
             </div>
         </div>
     )

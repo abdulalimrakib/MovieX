@@ -15,7 +15,7 @@ const Reating = ({ value }) => {
                 textColor: value < 5 ? "red" : value < 7 ? "orange" : "green"
             })}
 
-            className=' text-[30px] bg-white rounded-full font-bold p-[1px]'
+            className=' bg-white rounded-full font-medium md:font-bold p-[1px]'
         />
     )
 }

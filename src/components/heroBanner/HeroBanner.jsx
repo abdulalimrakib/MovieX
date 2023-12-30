@@ -26,7 +26,7 @@ function HeroBanner() {
 
     return (
         <>
-            <div className="relative w-full md:h-[700px] sm:h-[450px] flex justify-center items-center">
+            <div className="relative w-full h-[300px] md:h-[700px] sm:h-[450px] flex justify-center items-center">
                 <div className="absolute w-full h-full opacity-70 overflow-hidden">
                     {!isLoading && <Img className="" src={backGround} alt="" />}
                 </div>
@@ -37,16 +37,16 @@ function HeroBanner() {
 
 
                 <div className="relative text-center flex flex-col">
-                    <span className="text-white md:text-[90px] text-[50px] font-bold mb-[10px]">Wellcome.</span>
-                    <span className="text-white md:text-[24px] text-[18px] font-medium mb-[40px]">Millions of movies, Tv shows and people to deserve. Explore now</span>
+                    <span className="text-white md:text-[90px] text-[30px] font-bold mb-[7px] md:mb-[10px]">Wellcome.</span>
+                    <span className="text-white md:text-[24px] text-[14px] font-medium mb-[20px] md:mb-[40px]">Millions of movies, Tv shows and people to deserve. Explore now</span>
 
-                    <div className="flex items-center w-full ">
-                        <input type="text" className="w-[80%] rounded-s-full h-[50px] indent-4 text-[18px]" name="search" placeholder="search fro a move or tv show..."
+                    <div className="flex justify-center items-center w-full ">
+                        <input type="text" className="w-[80%] rounded-s-full h-[30px] md:h-[50px] indent-2 md:indent-4 text-[14px] md:text-[18px] truncate" name="search" placeholder="search fro a move or tv show..."
                             onChange={e => { setSearchData(e.target.value) }}
                             onKeyUp={keyHandle}
                         />
                         <button
-                            className="w-[20%] text-[18px] font-medium bg-gradient-to-r from-[#FD8E28] to-[#CD1563] h-[50px] rounded-e-full"
+                            className="w-[20%] text-[14px] md:text-[18px] font-medium bg-gradient-to-r from-[#FD8E28] to-[#CD1563] h-[30px] md:h-[50px] rounded-e-full"
                             onClick={() => {
                                 searchData.length > 0 &&
                                     navigate(`/search/${searchData}`)
