@@ -25,7 +25,6 @@ const Populer = () => {
             type === "Movies" ? setPopulerData("movie") : setPopulerData("tv")
         }
     }
-    console.log(populerData);
 
     return (
         <>

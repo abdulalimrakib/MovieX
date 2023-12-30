@@ -10,11 +10,15 @@ import "slick-carousel/slick/slick-theme.css";
 
 const CastList = ({ casts, isLoading }) => {
     const { url } = useSelector(state => state.home)
+
+    const length = casts?.length
+
+
     var settings = {
         dots: false,
         infinite: true,
         speed: 500,
-        slidesToShow: 8,
+        slidesToShow: length > 7 ? 8 : length,
         slidesToScroll: 5
     };
 

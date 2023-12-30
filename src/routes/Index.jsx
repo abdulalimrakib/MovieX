@@ -17,7 +17,7 @@ function Index() {
                     <Route path="/" element={<Home />} />
                     <Route path="/:mediaType/:id" element={<Details />} />
                     <Route path="/explore/:mediaType" element={<Explore />} />
-                    <Route path="/search/:mediaType" element={<SearchResult />} />
+                    <Route path="/search/:query" element={<SearchResult />} />
                     <Route path="*" element={<Error />} />
                 </Routes>
                 <Footer />

@@ -6,6 +6,7 @@ import './showDetails.scss'
 import Reating from './../reating/Reating';
 import dayjs from "dayjs";
 import CastList from "../castList/CastList";
+import noPoster from "../../assets/no-poster.png";
 
 const ShowDetails = () => {
     const { mediaType, id } = useParams()
@@ -16,7 +17,7 @@ const ShowDetails = () => {
     const director = creditsData?.crew?.filter(data => data?.job === "Director")
     const writer = creditsData?.crew?.filter(data => data?.job === "Story")
 
-    const imgUrl = url?.backdrop + data?.backdrop_path
+    const imgUrl = data?.backdrop_path ? (url?.backdrop + data?.backdrop_path) : noPoster
 
 
 

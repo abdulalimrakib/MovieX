@@ -45,7 +45,13 @@ function HeroBanner() {
                             onChange={e => { setSearchData(e.target.value) }}
                             onKeyUp={keyHandle}
                         />
-                        <button className="w-[20%] text-[18px] font-medium bg-gradient-to-r from-[#FD8E28] to-[#CD1563] h-[50px] rounded-e-full">search</button>
+                        <button
+                            className="w-[20%] text-[18px] font-medium bg-gradient-to-r from-[#FD8E28] to-[#CD1563] h-[50px] rounded-e-full"
+                            onClick={() => {
+                                searchData.length > 0 &&
+                                    navigate(`/search/${searchData}`)
+                            }}
+                        >search</button>
                     </div>
                 </div>
             </div>

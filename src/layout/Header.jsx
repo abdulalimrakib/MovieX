@@ -6,14 +6,24 @@ import { useNavigate } from "react-router-dom";
 
 
 function Header() {
+  const [searchData, setSearchData] = useState("")
   const [isSearchBoxOpen, setIsSearchBoxOpen] = useState(false)
   const navigate = useNavigate()
 
-  const navigateHandle = (type) =>{
+  const navigateHandle = (type) => {
     navigate(`/explore/${type}`)
   }
 
+  const keyHandle = (e) => {
+    if (e.key === "Enter" && searchData.length > 0) {
+      navigate(`/search/${searchData}`)
+      setIsSearchBoxOpen(false)
+    }
+  }
 
+  const toggolHandel = () => {
+    setIsSearchBoxOpen(!isSearchBoxOpen)
+  }
 
   return (
     <>
@@ -26,7 +36,11 @@ function Header() {
             <ul className="flex gap-5 text-[20px]">
               <li className="hover:text-[#DF4156] hover:cursor-pointer duration-200" onClick={() => navigateHandle("movie")}>Movies</li>
               <li className="hover:text-[#DF4156] hover:cursor-pointer duration-200" onClick={() => navigateHandle("tv")}>Tv shows</li>
-              <li><HiOutlineSearch className="hover:text-[#DF4156] hover:cursor-pointer duration-200" onClick={() => setIsSearchBoxOpen(true)} /></li>
+              <li>
+                {
+                  !isSearchBoxOpen ? <HiOutlineSearch className="hover:text-[#DF4156] hover:cursor-pointer duration-200" onClick={toggolHandel} /> : <RiCloseFill className="hover:text-[#DF4156] hover:cursor-pointer duration-200" onClick={toggolHandel} />
+                }
+              </li>
             </ul>
           </div>
         </div>
@@ -34,9 +48,21 @@ function Header() {
 
       {
         isSearchBoxOpen &&
-        <div className='fixed w-full top=[60px] mt-[60px] z-10 rounded-full flex justify-center'>
-          <input type="text" className='w-[80%] h-[40px]  text-[14px] indent-5 rounded-s-full' />
-          <RiCloseFill className="text-[40px] bg-white rounded-e-full" onClick={() => setIsSearchBoxOpen(false)}/>
+        <div className='fixed w-full top=[60px] mt-[60px] z-10 rounded-full flex justify-center '>
+          <input
+            type="text"
+            className='w-[80%] h-[40px]  text-[14px] indent-5 rounded-s-full'
+            values={searchData}
+            onChange={(e) => setSearchData(e.target.value)}
+            onKeyUp={keyHandle}
+          />
+          <HiOutlineSearch className="text-[40px] bg-white rounded-e-full"
+            onClick={() => {
+              searchData.length > 0 &&
+                setIsSearchBoxOpen(false)
+              searchData.length > 0 &&
+                navigate(`/search/${searchData}`)
+            }} />
         </div>
       }
     </>

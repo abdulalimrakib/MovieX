@@ -29,7 +29,7 @@ const Similar = () => {
         <>
             <div className="flex justify-between px-10 ">
                 <div>
-                    {title && <span className="text-3xl text-[#D2225C] font-medium">{title}</span>}
+                    {data?.results?.length > 0 && <span className="text-3xl text-[#D2225C] font-medium">{title}</span>}
                 </div>
             </div>
 

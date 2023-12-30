@@ -22,7 +22,7 @@ const Poster = ({ posterData, media_type }) => {
             <div className="w-full aspect-[1/1.5] bg-cover bg-center">
                 <Img src={imgUrl}></Img>
                 <div className="absolute w-[40px] bg-white -mt-[45px] ml-1 rounded-full">
-                    <Reating value={posterData.vote_average.toFixed(1)} />
+                    <Reating value={posterData?.vote_average?.toFixed(1)} />
                 </div>
             </div>
             <div>

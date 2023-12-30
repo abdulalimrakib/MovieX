@@ -24,7 +24,7 @@ const Recommendation = () => {
         <>
             <div className="flex justify-between px-10 ">
                 <div>
-                    <span className="text-3xl text-[#D2225C] font-medium">Recommendations</span>
+                    {data?.results?.length > 0 && <span className="text-3xl text-[#D2225C] font-medium">Recommendations</span>}
                 </div>
             </div>
 
