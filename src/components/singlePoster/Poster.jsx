@@ -19,7 +19,7 @@ const Poster = ({ posterData, media_type }) => {
     const imgUrl = posterData.backdrop_path ? url.poster + posterData.backdrop_path : fallBackImg
     return (
         <div className="flex-shrink-0 w-full hover:cursor-pointer" onClick={() => goDetails(posterData.id)}>
-            <div className="w-full aspect-[1/1.5] bg-cover bg-center">
+            <div className="w-full aspect-[1/1.5] bg-cover bg-center hover:opacity-80 hover:scale-105 duration-300">
                 <Img src={imgUrl}></Img>
                 <div className="absolute w-[20px] md:w-[40px] bg-white -mt-[20px] md:-mt-[45px] md:ml-1 rounded-full">
                     <Reating value={posterData?.vote_average?.toFixed(1)} />

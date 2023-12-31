@@ -60,7 +60,7 @@ const Trending = () => {
                     <Switch tabs={["Day", "Week"]} getTabMethod={timeOfTrendingData} />
                 </div>
             </div>
-            <div className="px-2 md:px-5 my-3 md:my-10 mb-[40px] md:mb-[70px]">
+            <div className="px-2 md:px-5 my-3 md:my-7 mb-[40px] md:mb-[70px]">
                 <Slider {...settings}>
                     {
                         !isLoading ? (data?.results?.map(data => <Poster key={data.id} posterData={data} />)) : <p>
