@@ -5,6 +5,8 @@ import useFetch from "../../hooks/useFetch";
 import { useParams } from "react-router-dom";
 import Poster from "../singlePoster/Poster";
 import { Skeleton } from "@mui/material";
+import NextArrow from "../arrowOfSlider/NextArrow";
+import PrevArrow from "../arrowOfSlider/PrevArrow";
 
 const Recommendation = () => {
     const { mediaType, id } = useParams()
@@ -16,19 +18,42 @@ const Recommendation = () => {
         infinite: true,
         speed: 500,
         slidesToShow: 7,
-        slidesToScroll: 4
+        slidesToScroll: 4,
+        nextArrow: <NextArrow />,
+        prevArrow: <PrevArrow />,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 5,
+                    slidesToScroll: 3,
+                    infinite: true,
+                    dots: false,
+                    arrows: false
+                }
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 4,
+                    slidesToScroll: 2,
+                    initialSlide: 2,
+                    arrows: false
+                }
+            },
+        ]
     };
 
 
     return (
         <>
-            <div className="flex justify-between px-10 ">
+            <div className="px-2 lg:px-10">
                 <div>
-                    {data?.results?.length > 0 && <span className="text-3xl text-[#D2225C] font-medium">Recommendations</span>}
+                    {data?.results?.length > 0 && <span className="text-lg md:text-3xl text-[#D2225C] font-medium">Recommendations</span>}
                 </div>
             </div>
 
-            <Slider {...settings} className="px-10 my-16">
+            <Slider {...settings} className="px-2 lg:px-10 my-5 lg:my-16">
                 {
                     !isLoading ? (data?.results?.map(data => <Poster key={data.id} posterData={data} media_type={mediaType} />)) : <p>
                         <Skeleton className="" variant="rounded" animation="wave" width={210} height={60} />

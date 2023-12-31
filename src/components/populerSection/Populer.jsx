@@ -7,6 +7,8 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Skeleton from '@mui/material/Skeleton';
+import NextArrow from "../arrowOfSlider/NextArrow";
+import PrevArrow from "../arrowOfSlider/PrevArrow";
 
 
 const Populer = () => {
@@ -17,7 +19,31 @@ const Populer = () => {
         infinite: true,
         speed: 500,
         slidesToShow: 5,
-        slidesToScroll: 3
+        slidesToScroll: 3,
+        nextArrow: <NextArrow />,
+        prevArrow: <PrevArrow />,
+        responsive: [
+            {
+                breakpoint: 768,
+                settings: {
+                  slidesToShow: 4,
+                  slidesToScroll: 3,
+                  infinite: true,
+                  dots: false,
+                  arrows: false
+              }
+            },
+            {
+              breakpoint: 600,
+              settings: {
+                slidesToShow: 3,
+                slidesToScroll: 2,
+                initialSlide: 2,
+                arrows: false
+              }
+            },
+            
+          ]
     };
 
     const typeOfPopulerData = (type) => {

@@ -48,7 +48,7 @@ function Header() {
 
       {
         isSearchBoxOpen &&
-        <div className='fixed w-full top=[60px] mt-[30px] md:mt-[60px] z-10 rounded-full flex justify-center '>
+        <div className='fixed w-full top=[60px] mt-[30px] md:mt-[60px] z-10 rounded-full flex justify-center'>
           <input
             type="text"
             className='w-[80%] h-[20px] md:h-[40px] text-[12px] md:text-[14px] indent-2 md:indent-5 rounded-s-full'

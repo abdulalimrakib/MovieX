@@ -40,7 +40,7 @@ function HeroBanner() {
                     <span className="text-white md:text-[90px] text-[30px] font-bold mb-[7px] md:mb-[10px]">Wellcome.</span>
                     <span className="text-white md:text-[24px] text-[14px] font-medium mb-[20px] md:mb-[40px]">Millions of movies, Tv shows and people to deserve. Explore now</span>
 
-                    <div className="flex justify-center items-center w-full ">
+                    <div className="flex justify-center items-center w-full px-5 md:px-0">
                         <input type="text" className="w-[80%] rounded-s-full h-[30px] md:h-[50px] indent-2 md:indent-4 text-[14px] md:text-[18px] truncate" name="search" placeholder="search fro a move or tv show..."
                             onChange={e => { setSearchData(e.target.value) }}
                             onKeyUp={keyHandle}

@@ -19,21 +19,42 @@ const CastList = ({ casts, isLoading }) => {
         infinite: true,
         speed: 500,
         slidesToShow: length > 7 ? 8 : length,
-        slidesToScroll: 5
+        slidesToScroll: 5,
+        responsive: [
+            {
+              breakpoint: 768,
+                settings: {
+                  slidesToShow: length > 7 ? 8 : length,
+                  slidesToScroll: 3,
+                  infinite: true,
+                  dots: false,
+                  arrows: false
+              }
+            },
+            {
+              breakpoint: 600,
+              settings: {
+                slidesToShow: 5,
+                slidesToScroll: 2,
+                initialSlide: 2,
+                arrows: false
+              }
+            },   
+          ]
     };
 
 
     return (
-        <div className="px-[100px] mb-10">
+        <div className="px-[10px] xl:px-[100px] mb-10">
             <Slider {...settings}>
                 {!isLoading ?
-                    (casts?.map(item => (<div key={item.id} className="flex flex-col pl-8">
-                        <div className="w-[100px] h-[100px] rounded-full overflow-hidden flex justify-center items-center">
+                    (casts?.map(item => (<div key={item.id} className="flex flex-col">
+                        <div className="w-[50px] lg:w-[100px] h-[50px] lg:h-[100px] rounded-full overflow-hidden flex justify-center items-center">
                             <Img src={item?.profile_path ? (url.profile + item.profile_path) : (avatar)} />
                         </div>
                         <div className="text-white text-center py-2">
-                            <h2 className="truncate">{item.name}</h2>
-                            <h4 className="text-[14px] italic text-gray-500 my-1 truncate">{item.character}</h4>
+                            <h2 className="truncate text-[12px] md:tex-[16px]">{item.name}</h2>
+                            <h4 className="text-[10px] md:tex-[14px] italic text-gray-500 my-1 truncate">{item.character}</h4>
                         </div>
                     </div>))) : <p>Loading ...</p>
                 }

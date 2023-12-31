@@ -2,7 +2,9 @@
 
 function Error() {
   return (
-    <div>Error</div>
+    <div className="text-3xl text-[#c12e5b] h-screen flex justify-center items-center">
+      <h2>Wrong URL !!!</h2>
+    </div>
   )
 }
 

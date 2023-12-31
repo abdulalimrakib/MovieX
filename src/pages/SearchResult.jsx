@@ -38,23 +38,23 @@ function SearchResult() {
     }, [query])
 
     return (
-        <div className="py-[80px] px-10">
+        <div className="py-[40px] md:py-[80px] px-2 md:px-5 lg:px-10">
             {
                 !isLoading ?
                     <>
-                        <div className="text-white text-[24px]">
+                        <div className="text-white text-[14px] md:text-[24px]">
                             {
                                 `Search ${datas?.results?.length > 1 ? "results" : "result"} of '${query}'`
                             }
                         </div>
-                        <div className="my-10">
+                        <div className="my-5 lg:my-10">
                             <InfiniteScroll
                                 dataLength={datas?.results?.length || []}
                                 className="content"
                                 next={dataNextFetching}
                                 hasMore={pageNo <= datas?.total_pages}
                             >
-                                <div className="grid grid-cols-6 gap-10">
+                                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 md:gap-6 lg:gap-10">
                                     {
                                         datas?.results?.map((item, index) => {
                                             if (item.media_type === "person")
