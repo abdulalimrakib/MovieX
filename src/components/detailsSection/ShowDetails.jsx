@@ -7,11 +7,15 @@ import Reating from './../reating/Reating';
 import dayjs from "dayjs";
 import CastList from "../castList/CastList";
 import noPoster from "../../assets/no-poster.png";
+import PopUpModel from "../popUpModel/PopUpModel";
+import { useState } from "react";
 
 const ShowDetails = () => {
     const { mediaType, id } = useParams()
+    const [showVideo, setShowVideo] = useState(false)
     const { isLoading, data } = useFetch(`/${mediaType}/${id}`)
-    const { isLoading: creditsLoadong, data: creditsData } = useFetch(`/${mediaType}/${id}/credits`)
+    const { isLoading: creditsLoading, data: creditsData } = useFetch(`/${mediaType}/${id}/credits`)
+    const { isLoading: videosLoading, data: videosData } = useFetch(`/${mediaType}/${id}/videos`)
     const { url } = useSelector(state => state.home)
 
     const director = creditsData?.crew?.filter(data => data?.job === "Director")
@@ -19,6 +23,9 @@ const ShowDetails = () => {
 
     const imgUrl = data?.backdrop_path ? (url?.backdrop + data?.backdrop_path) : noPoster
 
+    const showVideoHandle = () => {
+        setShowVideo(false)
+    }
 
 
     return (
@@ -45,8 +52,14 @@ const ShowDetails = () => {
                                 <div className="mb-6">
                                     <span className="italic text-gray-500">{data.tagline}</span>
                                 </div>
-                                <div className="w-[55px] mb-6">
-                                    <Reating value={data.vote_average.toFixed(1)} />
+                                <div className="mb-6 flex items-center gap-10">
+                                    <div className="w-[55px]">
+                                        <Reating value={data.vote_average.toFixed(1)} />
+                                    </div>
+                                    <div>
+                                        <button onClick={() => setShowVideo(true)}>play</button>
+                                        <PopUpModel show={showVideo} close={showVideoHandle} videosData={videosData} videosLoading={videosLoading}/>
+                                    </div>
                                 </div>
                                 <div>
                                     <h3 className="text-[18px] md:text-[20px]">Overview</h3>
@@ -69,13 +82,13 @@ const ShowDetails = () => {
                                 <div className="py-3 md:py-5 border-b-[0.5px] border-gray-400">
                                     <div>
                                         <span className="text-[12px] md:text-[14px]">Director: </span>
-                                        {!creditsLoadong && <span className="text-[12px] md:text-[14px] ml-1 text-gray-400">{director?.length > 0 ? director[0].name : ""}</span>}
+                                        {!creditsLoading && <span className="text-[12px] md:text-[14px] ml-1 text-gray-400">{director?.length > 0 ? director[0].name : ""}</span>}
                                     </div>
                                 </div>
                                 <div className="py-3 md:py-5 border-b-[0.5px] border-gray-500">
                                     <div>
                                         <span className="text-[12px] md:text-[14px]">writer: </span>
-                                        {!creditsLoadong &&
+                                        {!creditsLoading &&
                                             writer.map((w, i) => {
                                                 return <span key={i} className="text-[12px] md:text-[14px] ml-1 text-gray-400">
                                                     {w.name} {writer.length - 1 !== i && ", "}
@@ -89,7 +102,7 @@ const ShowDetails = () => {
                     </div>
                     <div>
                         <h2 className="mb-3 relative text-[16px] md:text-[24px] text-[#C12E5B] font-medium px-3 lg:px-10">Top Casts</h2>
-                        <CastList casts={creditsData.cast} isLoading={creditsLoadong} />
+                        <CastList casts={creditsData.cast} isLoading={creditsLoading} />
                     </div>
                 </>
             ) : ""

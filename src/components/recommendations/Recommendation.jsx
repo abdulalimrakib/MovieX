@@ -11,13 +11,13 @@ import PrevArrow from "../arrowOfSlider/PrevArrow";
 const Recommendation = () => {
     const { mediaType, id } = useParams()
     const { isLoading, data } = useFetch(`/${mediaType}/${id}/recommendations`)
-    console.log(mediaType);
+    const length = data?.results?.length
 
     var settings = {
         dots: false,
         infinite: true,
         speed: 500,
-        slidesToShow: 7,
+        slidesToShow: length > 7 ? 7 : length,
         slidesToScroll: 4,
         nextArrow: <NextArrow />,
         prevArrow: <PrevArrow />,
@@ -25,7 +25,7 @@ const Recommendation = () => {
             {
                 breakpoint: 1024,
                 settings: {
-                    slidesToShow: 5,
+                    slidesToShow: length > 5 ? 5 : length,
                     slidesToScroll: 3,
                     infinite: true,
                     dots: false,
@@ -35,7 +35,7 @@ const Recommendation = () => {
             {
                 breakpoint: 600,
                 settings: {
-                    slidesToShow: 4,
+                    slidesToShow: length > 4 ? 4 : length,
                     slidesToScroll: 2,
                     initialSlide: 2,
                     arrows: false

@@ -13,13 +13,13 @@ const Similar = () => {
     const [title, setTitle] = useState(null)
     const { mediaType, id } = useParams()
     const { isLoading, data } = useFetch(`/${mediaType}/${id}/similar`)
-    console.log(data);
+    const length = data?.results?.length
 
     var settings = {
         dots: false,
         infinite: true,
         speed: 500,
-        slidesToShow: 7,
+        slidesToShow: length > 7 ? 7 : length,
         slidesToScroll: 4,
         nextArrow: <NextArrow />,
         prevArrow: <PrevArrow />,
@@ -27,7 +27,7 @@ const Similar = () => {
             {
                 breakpoint: 1024,
                 settings: {
-                    slidesToShow: 5,
+                    slidesToShow: length > 5 ? 5 : length,
                     slidesToScroll: 3,
                     infinite: true,
                     dots: false,
@@ -37,7 +37,7 @@ const Similar = () => {
             {
                 breakpoint: 600,
                 settings: {
-                    slidesToShow: 4,
+                    slidesToShow: length > 4 ? 4 : length,
                     slidesToScroll: 2,
                     initialSlide: 2,
                     arrows: false
