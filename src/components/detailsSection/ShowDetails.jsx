@@ -9,6 +9,7 @@ import CastList from "../castList/CastList";
 import noPoster from "../../assets/no-poster.png";
 import PopUpModel from "../popUpModel/PopUpModel";
 import { useState } from "react";
+import { VscPlayCircle } from "react-icons/vsc";
 
 const ShowDetails = () => {
     const { mediaType, id } = useParams()
@@ -27,7 +28,7 @@ const ShowDetails = () => {
         setShowVideo(false)
     }
 
-
+console.log();
     return (
         <div className="">
             {!isLoading ? (
@@ -52,13 +53,14 @@ const ShowDetails = () => {
                                 <div className="mb-6">
                                     <span className="italic text-gray-500">{data.tagline}</span>
                                 </div>
-                                <div className="mb-6 flex items-center gap-10">
+                                <div className="mb-6 flex items-center gap-5">
                                     <div className="w-[55px]">
                                         <Reating value={data.vote_average.toFixed(1)} />
                                     </div>
                                     <div>
-                                        <button onClick={() => setShowVideo(true)}>play</button>
-                                        <PopUpModel show={showVideo} close={showVideoHandle} videosData={videosData} videosLoading={videosLoading}/>
+                                        <button onClick={() => setShowVideo(true)} className="flex gap-2 items-center text-[20px] hover:text-[#DD3B5D] duration-300
+                                        "> <VscPlayCircle className="text-[55px]" /> Watch trailer</button>
+                                        <PopUpModel show={showVideo} close={showVideoHandle} videoData={videosData?.results?.[0].key} videosLoading={videosLoading}/>
                                     </div>
                                 </div>
                                 <div>
