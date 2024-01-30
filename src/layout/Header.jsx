@@ -4,11 +4,15 @@ import { RiCloseFill } from "react-icons/ri";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { FiMenu } from "react-icons/fi";
+import { MdClose } from "react-icons/md";
+
 
 function Header() {
   const [searchData, setSearchData] = useState("")
   const [isSearchBoxOpen, setIsSearchBoxOpen] = useState(false)
   const navigate = useNavigate()
+  const [isMenuCliked, setIsMenuCliked] = useState(false)
 
   const navigateHandle = (type) => {
     navigate(`/explore/${type}`)
@@ -32,19 +36,61 @@ function Header() {
           <div>
             <img className="h-[25px] md:h-[50px] hover:cursor-pointer" onClick={() => navigate("/")} src={logo} alt="" />
           </div>
+          <ul className="hidden md:flex gap-2 md:gap-5 text-[10px] md:text-[20px]">
+            <li className="hover:text-[#DF4156] hover:cursor-pointer duration-200" onClick={() => navigateHandle("movie")}>Movies</li>
+            <li className="hover:text-[#DF4156] hover:cursor-pointer duration-200" onClick={() => navigateHandle("tv")}>Tv shows</li>
+            <li>
+              {
+                !isSearchBoxOpen ? <HiOutlineSearch className="hover:text-[#DF4156] hover:cursor-pointer duration-200" onClick={toggolHandel} /> : <RiCloseFill className="hover:text-[#DF4156] hover:cursor-pointer duration-200" onClick={toggolHandel} />
+              }
+            </li>
+          </ul>
+
+          <div className="md:hidden">
+            <div className="flex items-center gap-5">
+              <ul className="flex gap-5">
+                <li>
+                  {
+                    !isSearchBoxOpen ? <HiOutlineSearch className="hover:text-[#DF4156] hover:cursor-pointer duration-200" onClick={toggolHandel} /> : <RiCloseFill className="hover:text-[#DF4156] hover:cursor-pointer duration-200" onClick={toggolHandel} />
+                  }
+                </li>
+              </ul>
+              {
+                isMenuCliked ? (<MdClose onClick={() => setIsMenuCliked(false)} />) : (<FiMenu onClick={() => setIsMenuCliked(true)} />)
+              }
+            </div>
+          </div>
+        </div>
+
+        <div className={`container ${isMenuCliked ? "block" : "hidden"} fixed w-full top=[60px] mt-[30px] z-10 bg-white`}>
+          <ul>
+            <li className="hover:text-[#DF4156] hover:cursor-pointer duration-200" onClick={() => navigateHandle("movie")}>Movies</li>
+            <li className="hover:text-[#DF4156] hover:cursor-pointer duration-200" onClick={() => navigateHandle("tv")}>Tv shows</li>
+          </ul>
+        </div>
+      </div>
+
+
+
+
+      {/* <div className="flex justify-center w-full">
+        <div className="px-[15px] md:px-10 flex justify-between items-center h-[30px] md:h-[60px] fixed z-10 bg-opacity-35 backdrop-blur-[8px] text-white w-full">
+          <div> */}
+            {/* <img className="h-[25px] md:h-[50px] hover:cursor-pointer" onClick={() => navigate("/")} src={logo} alt="" /> */}
+          {/* </div>
           <div>
-            <ul className="flex gap-2 md:gap-5 text-[10px] md:text-[20px]">
-              <li className="hover:text-[#DF4156] hover:cursor-pointer duration-200" onClick={() => navigateHandle("movie")}>Movies</li>
-              <li className="hover:text-[#DF4156] hover:cursor-pointer duration-200" onClick={() => navigateHandle("tv")}>Tv shows</li>
-              <li>
+            <ul className="flex gap-2 md:gap-5 text-[10px] md:text-[20px]"> */}
+              {/* <li className="hover:text-[#DF4156] hover:cursor-pointer duration-200" onClick={() => navigateHandle("movie")}>Movies</li>
+              <li className="hover:text-[#DF4156] hover:cursor-pointer duration-200" onClick={() => navigateHandle("tv")}>Tv shows</li> */}
+              {/* <li>
                 {
                   !isSearchBoxOpen ? <HiOutlineSearch className="hover:text-[#DF4156] hover:cursor-pointer duration-200" onClick={toggolHandel} /> : <RiCloseFill className="hover:text-[#DF4156] hover:cursor-pointer duration-200" onClick={toggolHandel} />
                 }
-              </li>
-            </ul>
+              </li> */}
+            {/* </ul>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {
         isSearchBoxOpen &&

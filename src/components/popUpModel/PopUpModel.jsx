@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 
 import ReactPlayer from "react-player"
-import "./style.scss"
 
 const PopUpModel = ({ show, close, videoData }) => {
 

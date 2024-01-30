@@ -1,12 +1,12 @@
 import { useEffect } from "react"
 import { fetchApi } from "./utils/api"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch} from "react-redux"
 import { getApiConfiguration } from "./store/homeSlice"
 import Index from "./routes"
 
 
 function App() {
-  //const { url } = useSelector(state => state.home)
+  
   const dispatch = useDispatch()
 
   useEffect(() => {

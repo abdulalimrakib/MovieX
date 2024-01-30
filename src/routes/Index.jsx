@@ -10,7 +10,7 @@ import Footer from "../layout/Footer";
 
 function Index() {
     return (
-        <div className="">
+        <div className="h-full">
             <BrowserRouter>
                 <Header />
                 <Routes>

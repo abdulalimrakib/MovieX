@@ -1,9 +1,11 @@
+// import Explore from "../components/explore/Explore"
 
+import ShowExplore from "../components/explore/ShowExplore"
 
 function Explore() {
     return (
         <div className="">
-            <Explore />
+            <ShowExplore />
         </div>
     )
 }

@@ -7,7 +7,7 @@ import {
 
 function Footer() {
   return (
-    <footer className="text-white bg-black py-5 relative">
+    <footer className="text-white bg-black py-5 relative bottom-0">
       <div className="grid gap-2 grid-cols-2 md:flex md:flex-col text-start">
         <div className="flex justify-center ">
           <ul className="md:flex justify-center md:my-5 md:gap-5 text-[14px] md:text-[20px]">
