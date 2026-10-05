@@ -1,66 +1,55 @@
-/* eslint-disable react/prop-types */
-import { useSelector } from "react-redux";
-// import "./cast.scss"
+import PropTypes from "prop-types";
+import Slider from "../Slider";
 import Img from "../Img";
-import avatar from "../../assets/avatar.png"
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import avatar from "../../assets/avatar.webp"
+import { IMAGE_SIZES, imageUrl } from "../../utils/media";
 
+const settingsFor = (count) => ({
+    dots: false,
+    speed: 500,
+    arrows: false,
+    infinite: count > 8,
+    slidesToShow: 8,
+    slidesToScroll: 5,
+    responsive: [
+        { breakpoint: 768, settings: { slidesToShow: 6, slidesToScroll: 3, infinite: count > 6 } },
+        { breakpoint: 600, settings: { slidesToShow: 4, slidesToScroll: 2, infinite: count > 4 } },
+    ],
+})
 
-const CastList = ({ casts, isLoading }) => {
-    const { url } = useSelector(state => state.home)
-
-    const length = casts?.length
-
-
-    var settings = {
-        dots: false,
-        infinite: true,
-        speed: 500,
-        slidesToShow: length > 7 ? 8 : length,
-        slidesToScroll: 5,
-        responsive: [
-            {
-              breakpoint: 768,
-                settings: {
-                  slidesToShow: length > 7 ? 8 : length,
-                  slidesToScroll: 3,
-                  infinite: true,
-                  dots: false,
-                  arrows: false
-              }
-            },
-            {
-              breakpoint: 600,
-              settings: {
-                slidesToShow: 5,
-                slidesToScroll: 2,
-                initialSlide: 2,
-                arrows: false
-              }
-            },   
-          ]
-    };
-
+const CastList = ({ casts }) => {
+    if (!casts?.length) return null
 
     return (
-        <div className="px-[10px] xl:px-[100px] mb-10">
-            <Slider {...settings}>
-                {!isLoading ?
-                    (casts?.map(item => (<div key={item.id} className="flex flex-col">
-                        <div className="w-[50px] lg:w-[100px] h-[50px] lg:h-[100px] rounded-full overflow-hidden flex justify-center items-center">
-                            <Img src={item?.profile_path ? (url.profile + item.profile_path) : (avatar)} />
+        <section>
+            <h2 className="mb-3 text-[16px] md:text-[24px] text-[#C12E5B] font-medium px-3 lg:px-10">Top Casts</h2>
+            <div className="px-[10px] xl:px-[100px] mb-10">
+                <Slider {...settingsFor(casts.length)}>
+                    {casts.map(item => (
+                        <div key={item.credit_id ?? item.id} className="flex flex-col items-center">
+                            <div className="w-[50px] lg:w-[100px] h-[50px] lg:h-[100px] mx-auto rounded-full overflow-hidden">
+                                <Img src={imageUrl(item.profile_path, IMAGE_SIZES.profile, avatar)} alt={item.name} />
+                            </div>
+                            <div className="text-white text-center py-2">
+                                <p className="truncate text-[12px] md:text-[16px]">{item.name}</p>
+                                <p className="text-[10px] md:text-[14px] italic text-gray-500 my-1 truncate">{item.character}</p>
+                            </div>
                         </div>
-                        <div className="text-white text-center py-2">
-                            <h2 className="truncate text-[12px] md:tex-[16px]">{item.name}</h2>
-                            <h4 className="text-[10px] md:tex-[14px] italic text-gray-500 my-1 truncate">{item.character}</h4>
-                        </div>
-                    </div>))) : <p>Loading ...</p>
-                }
-            </Slider>
-        </div>
+                    ))}
+                </Slider>
+            </div>
+        </section>
     )
 }
+
+CastList.propTypes = {
+    casts: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number,
+        credit_id: PropTypes.string,
+        name: PropTypes.string,
+        character: PropTypes.string,
+        profile_path: PropTypes.string,
+    })),
+};
 
 export default CastList

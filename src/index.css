@@ -1,7 +1,9 @@
+@import "tailwindcss";
+
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
-  line-height: 1;
+  line-height: 1.2;
   font-weight: 500;
 
   font-synthesis: none;
@@ -18,48 +20,69 @@
   --pink: #da2f68;
   --orange: #f89e00;
   --gradient: linear-gradient(98.37deg, #f89e00 0.99%, #da2f68 100%);
-}
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  color-scheme: dark;
 }
 
 body {
   background-color: var(--black);
+  /* Carousels can poke past the viewport edge while animating. */
+  overflow-x: hidden;
 }
 
-::-webkit-scrollbar {
-  display: none;
+/* Thin, themed scrollbar instead of hiding it entirely. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--black-light) var(--black3);
 }
 
-.skeleton {
-  position: relative;
-  overflow: hidden;
-  background-color: #0a2955;
-  &::after {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      transform: translateX(-100%);
-      background-image: linear-gradient(
-          90deg,
-          rgba(#193763, 0) 0,
-          rgba(#193763, 0.2) 20%,
-          rgba(#193763, 0.5) 60%,
-          rgba(#193763, 0)
-      );
-      animation: shimmer 2s infinite;
-      content: "";
+/* Tailwind 4 no longer sets a pointer cursor on buttons. */
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--pink);
+  outline-offset: 2px;
+}
+
+/* Wrapper rendered by <Img>; fills its container and crops the image. */
+.lazy-img {
+  display: block !important;
+  width: 100%;
+  height: 100%;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+/* Gradient that fades a backdrop image into the page background. */
+.opacity-layer {
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(180deg, #04152d00 0%, #04152d 79.17%);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+
+  @media (width >= 48rem) {
+    height: 175px;
   }
 
-  @keyframes shimmer {
-      100% {
-          transform: translateX(100%);
-      }
+  @media (width >= 64rem) {
+    height: 250px;
   }
 }
 
+/* Gap between slides in every react-slick carousel. */
+.slick-slide > div {
+  margin: 0 5px;
+
+  @media (width >= 48rem) {
+    margin: 15px;
+  }
+}

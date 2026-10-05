@@ -1,167 +1,111 @@
-/* eslint-disable no-unsafe-optional-chaining */
-
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import InfiniteScroll from "react-infinite-scroll-component";
+import PropTypes from "prop-types";
+import { useMemo, useState } from "react";
 import Select from "react-select";
 
-import "./style.scss";
+import "./style.css";
 
 import useFetch from "../../hooks/useFetch";
-import { fetchApi } from "../../utils/api";
-import Poster from "../singlePoster/Poster";
+import usePaginatedFetch from "../../hooks/usePaginatedFetch";
+import PosterGrid from "../posterGrid/PosterGrid";
 
-let filters = {};
+// Movies and TV shows use different field names for date and title sorting.
+const SORT_OPTIONS = {
+    movie: [
+        { value: "popularity.desc", label: "Popularity Descending" },
+        { value: "popularity.asc", label: "Popularity Ascending" },
+        { value: "vote_average.desc", label: "Rating Descending" },
+        { value: "vote_average.asc", label: "Rating Ascending" },
+        { value: "primary_release_date.desc", label: "Release Date Descending" },
+        { value: "primary_release_date.asc", label: "Release Date Ascending" },
+        { value: "original_title.asc", label: "Title (A-Z)" },
+    ],
+    tv: [
+        { value: "popularity.desc", label: "Popularity Descending" },
+        { value: "popularity.asc", label: "Popularity Ascending" },
+        { value: "vote_average.desc", label: "Rating Descending" },
+        { value: "vote_average.asc", label: "Rating Ascending" },
+        { value: "first_air_date.desc", label: "First Air Date Descending" },
+        { value: "first_air_date.asc", label: "First Air Date Ascending" },
+        { value: "original_name.asc", label: "Title (A-Z)" },
+    ],
+};
 
-const sortbyData = [
-    { value: "popularity.desc", label: "Popularity Descending" },
-    { value: "popularity.asc", label: "Popularity Ascending" },
-    { value: "vote_average.desc", label: "Rating Descending" },
-    { value: "vote_average.asc", label: "Rating Ascending" },
-    {
-        value: "primary_release_date.desc",
-        label: "Release Date Descending",
-    },
-    { value: "primary_release_date.asc", label: "Release Date Ascending" },
-    { value: "original_title.asc", label: "Title (A-Z)" },
-];
-
-const ShowExplore = () => {
-    const [datas, setDatas] = useState(null);
-    const [pageNo, setPageNo] = useState(1);
-    const [loading, setLoading] = useState(false);
-    const [genre, setGenre] = useState(null);
-    const [sortby, setSortby] = useState(null);
-    const { mediaType } = useParams();
+/** Discover page for one media type. Render with `key={mediaType}` so filters reset on switch. */
+const ShowExplore = ({ mediaType }) => {
+    const [genres, setGenres] = useState([]);
+    const [sortBy, setSortBy] = useState(null);
 
     const { data: genresData } = useFetch(`/genre/${mediaType}/list`);
 
-    const fetchInitialData = () => {
-        setLoading(true);
-        fetchApi(`/discover/${mediaType}`, filters).then((res) => {
-            setDatas(res);
-            setPageNo((prev) => prev + 1);
-            setLoading(false);
-        });
-    };
+    const params = useMemo(() => {
+        const p = {};
+        if (sortBy) p.sort_by = sortBy.value;
+        // Comma-separated ids mean "has all of these genres".
+        if (genres.length > 0) p.with_genres = genres.map(g => g.id).join(",");
+        return p;
+    }, [genres, sortBy]);
 
-    const dataNextFetching = () => {
-        fetchApi(
-            `/discover/${mediaType}?page=${pageNo}`,
-            filters
-        ).then((res) => {
-            if (datas?.results) {
-                setDatas({
-                    ...datas,
-                    results: [...datas?.results, ...res.results],
-                });
-            } else {
-                setDatas(res);
-            }
-            setPageNo((prev) => prev + 1);
-        });
-    };
+    const { results, isLoading, error, hasMore, loadMore } = usePaginatedFetch(`/discover/${mediaType}`, params);
 
-    useEffect(() => {
-        filters = {};
-        setDatas(null);
-        setPageNo(1);
-        setSortby(null);
-        setGenre(null);
-        fetchInitialData();
-    }, [mediaType]);
-
-    const onChange = (selectedItems, action) => {
-        if (action.name === "sortby") {
-            setSortby(selectedItems);
-            if (action.action !== "clear") {
-                filters.sort_by = selectedItems.value;
-            } else {
-                delete filters.sort_by;
-            }
-        }
-
-        if (action.name === "genres") {
-            setGenre(selectedItems);
-            if (action.action !== "clear") {
-                let genreId = selectedItems.map((g) => g.id);
-                genreId = JSON.stringify(genreId).slice(1, -1);
-                filters.with_genres = genreId;
-            } else {
-                delete filters.with_genres;
-            }
-        }
-
-        setPageNo(1);
-        fetchInitialData();
-    };
+    let content;
+    if (error) {
+        content = <span className="resultNotFound">Something went wrong. Please try again.</span>;
+    } else if (!isLoading && results.length === 0) {
+        content = <span className="resultNotFound">Sorry, results not found!</span>;
+    } else {
+        content = (
+            <PosterGrid
+                items={results}
+                dataLength={results.length}
+                hasMore={hasMore}
+                loadMore={loadMore}
+                isLoading={isLoading}
+                mediaType={mediaType}
+            />
+        );
+    }
 
     return (
-        <div className="explorePage py-[40px] md:py-[80px] px-2 md:px-5 lg:px-10">
-            <div>
-                <div className="pageHeader">
-                    <div className="pageTitle">
-                        {mediaType === "tv"
-                            ? "Explore TV Shows"
-                            : "Explore Movies"}
-                    </div>
-                    <div className="filters">
-                        <Select
-                            isMulti
-                            name="genres"
-                            value={genre}
-                            closeMenuOnSelect={false}
-                            options={genresData?.genres}
-                            getOptionLabel={(option) => option.name}
-                            getOptionValue={(option) => option.id}
-                            onChange={onChange}
-                            placeholder="Select genres"
-                            className="react-select-container genresDD"
-                            classNamePrefix="react-select"
-                        />
-                        <Select
-                            name="sortby"
-                            value={sortby}
-                            options={sortbyData}
-                            onChange={onChange}
-                            isClearable={true}
-                            placeholder="Sort by"
-                            className="react-select-container sortbyDD"
-                            classNamePrefix="react-select"
-                        />
-                    </div>
+        <div className="explorePage pb-[40px] md:pb-[80px] px-2 md:px-5 lg:px-10">
+            <div className="pageHeader">
+                <h1 className="pageTitle">
+                    {mediaType === "tv" ? "Explore TV Shows" : "Explore Movies"}
+                </h1>
+                <div className="filters">
+                    <Select
+                        isMulti
+                        name="genres"
+                        aria-label="Filter by genre"
+                        value={genres}
+                        closeMenuOnSelect={false}
+                        options={genresData?.genres ?? []}
+                        getOptionLabel={(option) => option.name}
+                        getOptionValue={(option) => option.id}
+                        onChange={(selected) => setGenres(selected ?? [])}
+                        placeholder="Select genres"
+                        className="react-select-container genresDD"
+                        classNamePrefix="react-select"
+                    />
+                    <Select
+                        name="sortby"
+                        aria-label="Sort by"
+                        value={sortBy}
+                        options={SORT_OPTIONS[mediaType]}
+                        onChange={setSortBy}
+                        isClearable
+                        placeholder="Sort by"
+                        className="react-select-container sortbyDD"
+                        classNamePrefix="react-select"
+                    />
                 </div>
-                {!loading && (
-                    <>
-                        {datas?.results?.length > 0 ? (
-                            <div className="py-5 lg:my-10">
-                            <InfiniteScroll
-                                dataLength={datas?.results?.length || []}
-                                className="content"
-                                next={dataNextFetching}
-                                hasMore={pageNo <= datas?.total_pages}
-                            >
-                                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 md:gap-6 lg:gap-10">
-                                    {
-                                        datas?.results?.map((item, index) => {
-                                            if (item.media_type === "person")
-                                                return
-                                            return <Poster key={index} posterData={item} media_type={mediaType} />
-                                        })
-                                    }
-                                </div>
-                            </InfiniteScroll>
-                        </div>
-                        ) : (
-                            <span className="resultNotFound">
-                                Sorry, Results not found!
-                            </span>
-                        )}
-                    </>
-                )}
             </div>
+            <div className="py-5">{content}</div>
         </div>
     );
+};
+
+ShowExplore.propTypes = {
+    mediaType: PropTypes.oneOf(["movie", "tv"]).isRequired,
 };
 
 export default ShowExplore;

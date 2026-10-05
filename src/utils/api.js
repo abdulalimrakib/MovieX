@@ -7,15 +7,12 @@ const headers = {
   Authorization: "Bearer " + token,
 };
 
-export const fetchApi = async (url, params) => {
-  try {
-    const { data } = await axios.get(baseUrl + url, {
-      headers,
-      params,
-    });
-    return data;
-  } catch (error) {
-    console.log(error);
-    return error;
-  }
+// Throws on failure so callers (and useFetch) can show an error state.
+export const fetchApi = async (url, params, { signal } = {}) => {
+  const { data } = await axios.get(baseUrl + url, {
+    headers,
+    params,
+    signal,
+  });
+  return data;
 };

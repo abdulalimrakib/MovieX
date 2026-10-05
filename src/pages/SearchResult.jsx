@@ -1,76 +1,46 @@
-import { useEffect, useState } from "react"
-import { fetchApi } from "../utils/api"
 import { useParams } from "react-router-dom"
-import InfiniteScroll from "react-infinite-scroll-component"
-import Poster from "../components/singlePoster/Poster"
+import usePaginatedFetch from "../hooks/usePaginatedFetch"
+import useDocumentTitle from "../hooks/useDocumentTitle"
+import PosterGrid from "../components/posterGrid/PosterGrid"
+import noResults from "../assets/no-results.webp"
 
 function SearchResult() {
-    const [datas, setDatas] = useState()
-    const [isLoading, setIsLoading] = useState(true)
+    // useParams already decodes the URL-encoded query.
     const { query } = useParams()
-    const [pageNo, setPageNo] = useState(1)
+    const { results, isLoading, error, hasMore, loadMore } = usePaginatedFetch("/search/multi", { query })
+    // People are returned by /search/multi but have no details page here.
+    const items = results.filter(item => item.media_type !== "person")
 
-    const dataFetching = () => {
-        fetchApi(`/search/multi?query=${query}&page=${pageNo}`)
-            .then(res => {
-                setDatas(res)
-                setIsLoading(false)
-                setPageNo(prev => prev + 1)
-            })
-    }
-    const dataNextFetching = () => {
-        fetchApi(`/search/multi?query=${query}&page=${pageNo}`)
-            .then(res => {
-                if (datas?.results) {
-                    setDatas(prevData => ({
-                        ...prevData,
-                        results: [...prevData.results, ...res.results]
-                    }));
-                } else {
-                    setDatas(res);
-                }
-                setPageNo(prev => prev + 1)
-            })
-    }
+    useDocumentTitle(`Search: ${query}`)
 
-    useEffect(() => {
-        dataFetching()
-    }, [query])
+    let content
+    if (error) {
+        content = <p className="text-gray-400 text-[16px] md:text-[20px]">Something went wrong while searching. Please try again.</p>
+    } else if (!isLoading && items.length === 0 && !hasMore) {
+        content = (
+            <div className="flex flex-col items-center gap-4 py-10">
+                <img src={noResults} alt="" className="w-[200px] md:w-[300px]" />
+                <p className="text-gray-400 text-[16px] md:text-[20px]">No results found for &lsquo;{query}&rsquo;.</p>
+            </div>
+        )
+    } else {
+        content = (
+            <PosterGrid
+                items={items}
+                dataLength={results.length}
+                hasMore={hasMore}
+                loadMore={loadMore}
+                isLoading={isLoading}
+            />
+        )
+    }
 
     return (
-        <div className="py-[40px] md:py-[80px] px-2 md:px-5 lg:px-10">
-            {
-                !isLoading ?
-                    <>
-                        <div className="text-white text-[14px] md:text-[24px]">
-                            {
-                                `Search ${datas?.results?.length > 1 ? "results" : "result"} of '${query}'`
-                            }
-                        </div>
-                        <div className="my-5 lg:my-10">
-                            <InfiniteScroll
-                                dataLength={datas?.results?.length || []}
-                                className="content"
-                                next={dataNextFetching}
-                                hasMore={pageNo <= datas?.total_pages}
-                            >
-                                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 md:gap-6 lg:gap-10">
-                                    {
-                                        datas?.results?.map((item, index) => {
-                                            if (item.media_type === "person")
-                                                return
-                                            return <Poster key={index} posterData={item} media_type={item.media_type} />
-                                        })
-                                    }
-                                </div>
-                            </InfiniteScroll>
-                        </div>
-                    </>
-                    :
-                    <div className="flex justify-center">
-                        <h2 className="text-white text-[24px]">Loading ...</h2>
-                    </div>
-            }
+        <div className="min-h-[700px] pt-[80px] md:pt-[100px] pb-[40px] md:pb-[80px] px-2 md:px-5 lg:px-10">
+            <h1 className="text-white text-[18px] md:text-[24px] mb-5 lg:mb-10">
+                Search results for &lsquo;{query}&rsquo;
+            </h1>
+            {content}
         </div>
     )
 }

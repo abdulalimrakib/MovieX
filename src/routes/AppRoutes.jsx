@@ -1,29 +1,43 @@
+import { lazy, Suspense } from "react"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import Home from "../pages/Home"
-import Explore from './../pages/Explore';
-import SearchResult from './../pages/SearchResult';
-import Details from './../pages/Details';
-import Error from './../pages/Error';
-import Header from "../layout/Header";
-import Footer from "../layout/Footer";
+import Header from "../layout/Header"
+import Footer from "../layout/Footer"
+import ScrollToTop from "../components/ScrollToTop"
+import ErrorBoundary from "../components/ErrorBoundary"
 
+const Home = lazy(() => import("../pages/Home"))
+const Explore = lazy(() => import("../pages/Explore"))
+const SearchResult = lazy(() => import("../pages/SearchResult"))
+const Details = lazy(() => import("../pages/Details"))
+const NotFound = lazy(() => import("../pages/NotFound"))
 
-function Index() {
+const PageLoader = () => (
+    <div className="min-h-[80vh] flex justify-center items-center text-white text-[20px]">Loading ...</div>
+)
+
+function AppRoutes() {
     return (
-        <div className="h-full">
-            <BrowserRouter>
+        <BrowserRouter>
+            <ScrollToTop />
+            <div className="min-h-screen flex flex-col">
                 <Header />
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/:mediaType/:id" element={<Details />} />
-                    <Route path="/explore/:mediaType" element={<Explore />} />
-                    <Route path="/search/:query" element={<SearchResult />} />
-                    <Route path="*" element={<Error />} />
-                </Routes>
+                <main className="flex-1">
+                    <ErrorBoundary>
+                        <Suspense fallback={<PageLoader />}>
+                            <Routes>
+                                <Route path="/" element={<Home />} />
+                                <Route path="/explore/:mediaType" element={<Explore />} />
+                                <Route path="/search/:query" element={<SearchResult />} />
+                                <Route path="/:mediaType/:id" element={<Details />} />
+                                <Route path="*" element={<NotFound />} />
+                            </Routes>
+                        </Suspense>
+                    </ErrorBoundary>
+                </main>
                 <Footer />
-            </BrowserRouter>
-        </div>
+            </div>
+        </BrowserRouter>
     )
 }
 
-export default Index
+export default AppRoutes

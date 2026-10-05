@@ -9,8 +9,11 @@ lerna-debug.log*
 
 node_modules
 .env
+.env.*
+!.env.example
 dist
 dist-ssr
+coverage
 *.local
 
 # Editor directories and files

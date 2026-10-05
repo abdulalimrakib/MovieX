@@ -1,23 +1,30 @@
-/* eslint-disable react/prop-types */
+import PropTypes from "prop-types";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
-const Reating = ({ value }) => {
+const ratingColor = (value) => value < 5 ? "red" : value < 7 ? "orange" : "green"
+
+const Rating = ({ value }) => {
+    const score = Number(value) || 0
+    const color = ratingColor(score)
 
     return (
         <CircularProgressbar
-            value={value}
+            value={score}
             maxValue={10}
-            text={value}
+            text={score.toFixed(1)}
             styles={buildStyles({
-                pathColor: value < 5 ? "red" : value < 7 ? "orange" : "green",
+                pathColor: color,
                 textSize: "50px",
-                textColor: value < 5 ? "red" : value < 7 ? "orange" : "green"
+                textColor: color,
             })}
-
-            className=' bg-white rounded-full font-medium md:font-bold p-[1px]'
+            className='bg-white rounded-full font-medium md:font-bold p-[1px]'
         />
     )
 }
 
-export default Reating
+Rating.propTypes = {
+    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+};
+
+export default Rating

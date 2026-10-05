@@ -3,23 +3,30 @@ import { fetchApi } from "../utils/api"
 
 
 function useFetch(url) {
-    const [data, setData] = useState("")
-    const [isLoading, setIsLoading] = useState(true)
-    const [error, setError] = useState(null)
+    // Tag each result with the url it belongs to, so a url change immediately
+    // reads as "loading" without having to reset state inside the effect.
+    const [result, setResult] = useState({ url: null, data: null, error: null })
 
     useEffect(() => {
-        fetchApi(url)
-            .then(res => {
-                setIsLoading(false)
-                setData(res)
+        // Abort the previous request so a slow response for an old url
+        // can never overwrite the data for the current one.
+        const controller = new AbortController()
+
+        fetchApi(url, undefined, { signal: controller.signal })
+            .then(data => setResult({ url, data, error: null }))
+            .catch(error => {
+                if (!controller.signal.aborted) setResult({ url, data: null, error })
             })
-            .catch(e => {
-                setIsLoading(false)
-                setError(e)
-            })
+
+        return () => controller.abort()
     }, [url])
 
-    return { data, isLoading, error }
+    const isCurrent = result.url === url
+    return {
+        data: isCurrent ? result.data : null,
+        isLoading: !isCurrent,
+        error: isCurrent ? result.error : null,
+    }
 }
 
 export default useFetch
