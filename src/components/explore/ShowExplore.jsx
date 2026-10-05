@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 import Select from "react-select";
 
 import "./style.css";
@@ -30,20 +31,38 @@ const SORT_OPTIONS = {
     ],
 };
 
-/** Discover page for one media type. Render with `key={mediaType}` so filters reset on switch. */
+/**
+ * Discover page for one media type. The genre and sort filters live in the
+ * URL (?genres=28,12&sort=vote_average.desc) so a filtered view can be shared,
+ * bookmarked and restored with the Back button.
+ */
 const ShowExplore = ({ mediaType }) => {
-    const [genres, setGenres] = useState([]);
-    const [sortBy, setSortBy] = useState(null);
-
+    const [searchParams, setSearchParams] = useSearchParams();
     const { data: genresData } = useFetch(`/genre/${mediaType}/list`);
+
+    const genreIds = useMemo(
+        () => (searchParams.get("genres") ?? "").split(",").map(Number).filter(Boolean),
+        [searchParams]
+    );
+    const sortOptions = SORT_OPTIONS[mediaType];
+    const sortBy = sortOptions.find(o => o.value === searchParams.get("sort")) ?? null;
+    const genres = (genresData?.genres ?? []).filter(g => genreIds.includes(g.id));
+
+    const updateParam = (key, value) => {
+        const next = new URLSearchParams(searchParams);
+        if (value) next.set(key, value);
+        else next.delete(key);
+        // replace: changing a filter shouldn't add a history entry per click.
+        setSearchParams(next, { replace: true });
+    };
 
     const params = useMemo(() => {
         const p = {};
         if (sortBy) p.sort_by = sortBy.value;
         // Comma-separated ids mean "has all of these genres".
-        if (genres.length > 0) p.with_genres = genres.map(g => g.id).join(",");
+        if (genreIds.length > 0) p.with_genres = genreIds.join(",");
         return p;
-    }, [genres, sortBy]);
+    }, [genreIds, sortBy]);
 
     const { results, isLoading, error, hasMore, loadMore } = usePaginatedFetch(`/discover/${mediaType}`, params);
 
@@ -81,7 +100,7 @@ const ShowExplore = ({ mediaType }) => {
                         options={genresData?.genres ?? []}
                         getOptionLabel={(option) => option.name}
                         getOptionValue={(option) => option.id}
-                        onChange={(selected) => setGenres(selected ?? [])}
+                        onChange={(selected) => updateParam("genres", (selected ?? []).map(g => g.id).join(","))}
                         placeholder="Select genres"
                         className="react-select-container genresDD"
                         classNamePrefix="react-select"
@@ -90,8 +109,8 @@ const ShowExplore = ({ mediaType }) => {
                         name="sortby"
                         aria-label="Sort by"
                         value={sortBy}
-                        options={SORT_OPTIONS[mediaType]}
-                        onChange={setSortBy}
+                        options={sortOptions}
+                        onChange={(option) => updateParam("sort", option?.value)}
                         isClearable
                         placeholder="Sort by"
                         className="react-select-container sortbyDD"

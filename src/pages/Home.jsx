@@ -22,6 +22,7 @@ function Home() {
         <MediaCarousel title="Trending" tabs={TIME_TABS} endpoint={time => `/trending/all/${time}`} />
         <MediaCarousel title="What's Popular" tabs={MEDIA_TABS} endpoint={type => `/${type}/popular`} />
         <MediaCarousel title="Top Rated" tabs={MEDIA_TABS} endpoint={type => `/${type}/top_rated`} />
+        <MediaCarousel title="Upcoming Movies" endpoint={() => "/movie/upcoming"} mediaType="movie" />
       </div>
     </div>
   )

@@ -58,23 +58,47 @@
             }
 
             .react-select__control {
+                min-height: 40px;
                 border: 0;
                 outline: 0;
                 box-shadow: none;
                 background-color: var(--black-light);
                 border-radius: 20px;
+                cursor: pointer;
+                transition: box-shadow 150ms;
+
+                &.react-select__control--is-focused {
+                    box-shadow: 0 0 0 2px var(--pink);
+                }
 
                 .react-select__value-container {
+                    padding: 2px 12px;
 
                     .react-select__placeholder,
+                    .react-select__single-value,
                     .react-select__input-container {
                         color: white;
-                        margin: 0 10px;
+                    }
+
+                    .react-select__placeholder {
+                        color: rgba(255, 255, 255, 0.7);
                     }
                 }
 
-                .react-select__single-value {
-                    color: white;
+                .react-select__indicator {
+                    color: rgba(255, 255, 255, 0.7);
+
+                    &:hover {
+                        color: white;
+                    }
+                }
+
+                .react-select__indicator-separator {
+                    background-color: rgba(255, 255, 255, 0.25);
+                }
+
+                &.react-select__control--menu-is-open .react-select__dropdown-indicator {
+                    transform: rotate(180deg);
                 }
 
                 .react-select__multi-value {
@@ -83,25 +107,58 @@
 
                     .react-select__multi-value__label {
                         color: white;
+                        padding-left: 8px;
                     }
 
                     .react-select__multi-value__remove {
                         background-color: transparent;
-                        color: white;
+                        color: rgba(255, 255, 255, 0.7);
+                        border-radius: 0 10px 10px 0;
                         cursor: pointer;
 
                         &:hover {
-                            color: var(--black-lighter);
+                            color: white;
+                            background-color: var(--pink);
                         }
                     }
                 }
             }
 
+            /* Dark menu to match the page (the default is white, and option
+               text inherits the page's white text colour). */
             .react-select__menu {
-                top: 40px;
-                margin: 0;
-                padding: 0;
-                z-index: 20;
+                margin-top: 6px;
+                overflow: hidden;
+                background-color: var(--black2);
+                border: 1px solid var(--black-light);
+                border-radius: 14px;
+                box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+                z-index: 30;
+
+                .react-select__menu-list {
+                    padding: 6px;
+                }
+
+                .react-select__option {
+                    color: rgba(255, 255, 255, 0.85);
+                    background-color: transparent;
+                    border-radius: 8px;
+                    cursor: pointer;
+
+                    &.react-select__option--is-focused {
+                        color: white;
+                        background-color: var(--black-light);
+                    }
+
+                    &.react-select__option--is-selected {
+                        color: white;
+                        background: var(--gradient);
+                    }
+                }
+
+                .react-select__menu-notice {
+                    color: rgba(255, 255, 255, 0.6);
+                }
             }
         }
     }

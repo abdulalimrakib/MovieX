@@ -8,6 +8,7 @@ export const IMAGE_SIZES = {
   posterLarge: "w500",
   backdrop: "w1280",
   profile: "w185",
+  logo: "w92",
 };
 
 export const MEDIA_TYPES = ["movie", "tv"];
@@ -25,3 +26,10 @@ export const formatDate = (date, format = "MMM D, YYYY") =>
   date && dayjs(date).isValid() ? dayjs(date).format(format) : "";
 
 export const getTitle = (item) => item?.title || item?.name || "";
+
+// Two-letter country code for region-specific data such as watch providers,
+// taken from the browser locale ("en-GB" -> "GB"), defaulting to the US.
+export const getRegion = (locale = globalThis.navigator?.language) => {
+  const region = locale?.split("-")[1]
+  return region && /^[A-Za-z]{2}$/.test(region) ? region.toUpperCase() : "US"
+}

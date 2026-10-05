@@ -9,6 +9,8 @@ const Home = lazy(() => import("../pages/Home"))
 const Explore = lazy(() => import("../pages/Explore"))
 const SearchResult = lazy(() => import("../pages/SearchResult"))
 const Details = lazy(() => import("../pages/Details"))
+const Person = lazy(() => import("../pages/Person"))
+const Watchlist = lazy(() => import("../pages/Watchlist"))
 const NotFound = lazy(() => import("../pages/NotFound"))
 
 const PageLoader = () => (
@@ -28,6 +30,8 @@ function AppRoutes() {
                                 <Route path="/" element={<Home />} />
                                 <Route path="/explore/:mediaType" element={<Explore />} />
                                 <Route path="/search/:query" element={<SearchResult />} />
+                                <Route path="/watchlist" element={<Watchlist />} />
+                                <Route path="/person/:id" element={<Person />} />
                                 <Route path="/:mediaType/:id" element={<Details />} />
                                 <Route path="*" element={<NotFound />} />
                             </Routes>

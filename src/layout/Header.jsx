@@ -4,12 +4,15 @@ import { HiOutlineSearch } from "react-icons/hi";
 import { RiCloseFill } from "react-icons/ri";
 import { FiMenu } from "react-icons/fi";
 import { MdClose } from "react-icons/md";
+import { FaRegBookmark } from "react-icons/fa6";
 import logo from "../assets/movix-logo.svg"
 import SearchForm from "../components/searchForm/SearchForm";
+import useWatchlist from "../hooks/useWatchlist";
 
 const NAV_LINKS = [
   { to: "/explore/movie", label: "Movies" },
   { to: "/explore/tv", label: "TV Shows" },
+  { to: "/watchlist", label: "Watchlist" },
 ]
 
 const navLinkClass = ({ isActive }) =>
@@ -22,6 +25,18 @@ function Header() {
   // considered closed as soon as the user navigates somewhere else.
   const [openPanel, setOpenPanel] = useState(null)
   const { pathname } = useLocation()
+  const { items: watchlist } = useWatchlist()
+
+  const linkLabel = (link) => (
+    <span className="relative inline-flex items-center gap-2">
+      {link.label}
+      {link.to === "/watchlist" && watchlist.length > 0 && (
+        <span className="min-w-[20px] h-[20px] px-1 rounded-full bg-[#da2f68] text-white text-[11px] font-bold flex items-center justify-center" aria-label={`${watchlist.length} saved`}>
+          {watchlist.length > 99 ? "99+" : watchlist.length}
+        </span>
+      )}
+    </span>
+  )
 
   const isOpen = (name) => openPanel?.name === name && openPanel.pathname === pathname
   const isSearchBoxOpen = isOpen("search")
@@ -47,7 +62,7 @@ function Header() {
         <nav aria-label="Main" className="hidden md:block">
           <ul className="flex items-center gap-5 text-[20px]">
             {NAV_LINKS.map(link => (
-              <li key={link.to}><NavLink to={link.to} className={navLinkClass}>{link.label}</NavLink></li>
+              <li key={link.to}><NavLink to={link.to} className={navLinkClass}>{linkLabel(link)}</NavLink></li>
             ))}
             <li>{searchButton}</li>
           </ul>
@@ -55,6 +70,14 @@ function Header() {
 
         <div className="md:hidden flex items-center gap-5 text-[18px]">
           {searchButton}
+          <Link to="/watchlist" className={`relative ${iconButtonClass}`} aria-label={`Watchlist (${watchlist.length} saved)`}>
+            <FaRegBookmark className="text-[16px]" />
+            {watchlist.length > 0 && (
+              <span className="absolute -top-2 -right-2.5 min-w-[16px] h-[16px] px-1 rounded-full bg-[#da2f68] text-white text-[10px] font-bold flex items-center justify-center" aria-hidden="true">
+                {watchlist.length > 99 ? "99+" : watchlist.length}
+              </span>
+            )}
+          </Link>
           <button type="button" className={iconButtonClass} onClick={toggleMenu} aria-label={isMenuOpen ? "Close menu" : "Open menu"} aria-expanded={isMenuOpen}>
             {isMenuOpen ? <MdClose /> : <FiMenu />}
           </button>
@@ -66,7 +89,7 @@ function Header() {
           <ul className="flex flex-col py-2">
             {NAV_LINKS.map(link => (
               <li key={link.to}>
-                <NavLink to={link.to} className={(state) => `block px-[15px] py-3 ${navLinkClass(state)}`}>{link.label}</NavLink>
+                <NavLink to={link.to} className={(state) => `block px-[15px] py-3 ${navLinkClass(state)}`}>{linkLabel(link)}</NavLink>
               </li>
             ))}
           </ul>

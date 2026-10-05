@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import Slider from "../Slider";
 import Img from "../Img";
 import avatar from "../../assets/avatar.webp"
@@ -26,15 +27,15 @@ const CastList = ({ casts }) => {
             <div className="px-[10px] xl:px-[100px] mb-10">
                 <Slider {...settingsFor(casts.length)}>
                     {casts.map(item => (
-                        <div key={item.credit_id ?? item.id} className="flex flex-col items-center">
-                            <div className="w-[50px] lg:w-[100px] h-[50px] lg:h-[100px] mx-auto rounded-full overflow-hidden">
+                        <Link key={item.credit_id ?? item.id} to={`/person/${item.id}`} className="group flex flex-col items-center">
+                            <div className="w-[50px] lg:w-[100px] h-[50px] lg:h-[100px] mx-auto rounded-full overflow-hidden ring-2 ring-transparent group-hover:ring-[#da2f68] transition">
                                 <Img src={imageUrl(item.profile_path, IMAGE_SIZES.profile, avatar)} alt={item.name} />
                             </div>
                             <div className="text-white text-center py-2">
-                                <p className="truncate text-[12px] md:text-[16px]">{item.name}</p>
+                                <p className="truncate text-[12px] md:text-[16px] group-hover:text-[#da2f68] transition-colors">{item.name}</p>
                                 <p className="text-[10px] md:text-[14px] italic text-gray-500 my-1 truncate">{item.character}</p>
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </Slider>
             </div>

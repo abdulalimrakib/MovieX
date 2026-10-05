@@ -10,7 +10,7 @@ function Explore() {
 
     if (!isValidMediaType(mediaType)) return <NotFound />
 
-    // The key resets genre/sort filters when switching between movies and TV.
+    // Filters live in the URL; the key just gives each media type a fresh component.
     return <ShowExplore key={mediaType} mediaType={mediaType} />
 }
 

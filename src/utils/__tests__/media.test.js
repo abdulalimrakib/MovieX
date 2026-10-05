@@ -47,3 +47,13 @@ describe("isValidMediaType", () => {
         expect(isValidMediaType(undefined)).toBe(false)
     })
 })
+
+describe("getRegion", () => {
+    it("reads the country from the locale and falls back to US", async () => {
+        const { getRegion } = await import("../media")
+        expect(getRegion("en-GB")).toBe("GB")
+        expect(getRegion("pt-br")).toBe("BR")
+        expect(getRegion("en")).toBe("US")
+        expect(getRegion(undefined)).toBe("US")
+    })
+})

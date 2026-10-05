@@ -10,7 +10,7 @@ const Switch = ({ tabs, onChange }) => {
     }
 
     return (
-        <div role="tablist" className="flex items-center h-[28px] md:h-[40px] bg-white text-black rounded-xl md:rounded-3xl text-[12px] md:text-[16px] md:p-1 font-bold text-center">
+        <div role="tablist" className="flex items-center h-[28px] md:h-[40px] bg-white text-black rounded-xl md:rounded-3xl text-[12px] md:text-[16px] p-[2px] md:p-1 font-bold text-center">
             {
                 tabs.map((tab, index) => (
                     <button
@@ -18,7 +18,7 @@ const Switch = ({ tabs, onChange }) => {
                         type="button"
                         role="tab"
                         aria-selected={selectedTab === index}
-                        className={`w-[60px] md:w-[100px] flex justify-center items-center h-full rounded-xl md:rounded-3xl ${selectedTab === index ? "text-white bg-linear-to-r from-[#FD8E28] to-[#CE1763]" : ""}`}
+                        className={`min-w-[64px] md:min-w-[100px] px-3 whitespace-nowrap flex justify-center items-center h-full rounded-xl md:rounded-3xl ${selectedTab === index ? "text-white bg-linear-to-r from-[#FD8E28] to-[#CE1763]" : ""}`}
                         onClick={() => tabChangerHandle(tab, index)}
                     >
                         {tab.label}
